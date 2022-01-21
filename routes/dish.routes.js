@@ -1,5 +1,5 @@
 const express = require('express')
-const { getAllDishes, addDish, getDish, updateDish, deleteDish } = require('../controllers/dish-controller')
+const { getAllDishes, addDish, getDish, updateDish, deleteDish } = require('../controllers/dish.controller')
 const router = express.Router()
 
 router

@@ -7,6 +7,4 @@ const uri = process.env.DATABASE.replace(
 
 mongoose.connect(uri).then(() => {
   console.log('Database was connected successfully')
-}).catch(err => {
-  console.error('Database connection error', err)
 })

@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "watch": "nodemon server.js",
-    "start": "SET NODE_ENV=development&&nodemon server.js"
+    "start": "SET NODE_ENV=production&&nodemon server.js",
+    "debug": "ndb server.js"
   },
   "author": "",
   "license": "ISC",
@@ -16,7 +17,8 @@
     "express": "^4.17.2",
     "mongodb": "^4.3.0",
     "mongoose": "^6.1.5",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

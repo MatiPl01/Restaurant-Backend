@@ -12,7 +12,7 @@ exports.getCurrencies = async (req, res) => {
     } catch (err) {
         console.error(err)
         res.status(404).json({
-            status: 'fail',
+            status: 'failed',
             message: err.message
         })
     }

@@ -1,5 +1,5 @@
 const express = require('express')
-const { getCurrencies } = require('../controllers/currencies-controller')
+const { getCurrencies } = require('../controllers/currencies.controller')
 const router = express.Router()
 
 router

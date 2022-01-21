@@ -4,11 +4,12 @@ const mongoose = require('mongoose')
 const dishSchema = new mongoose.Schema({
     _id: {
         type: ObjectId,
-        required: true
+        required: [true, 'Please provide a dish ID']
     },
     name: {
         type: String,
-        required: true
+        required: [true, 'Please provide a dish name'],
+        trim: true
     },
     cuisine: {
         type: String,
@@ -20,64 +21,68 @@ const dishSchema = new mongoose.Schema({
     },
     category: {
         type: String,
-        required: true
+        required: [true, 'Please provide a dish category']
     },
     ingredients: {
         type: [String],
-        required: true
+        required: [true, 'Please provide dish ingredients']
     },
     stock: {
         type: Number,
-        required: true
+        required: [true, 'Please provide a dish stock']
     },
     currency: {
         type: String,
-        required: true
+        required: [true, 'Please provide a dish price currency']
     },
     unitPrice: {
         type: Number,
-        required: true
+        required: [true, 'Please provide a dish unit price']
     },
     rating: {
         type: Number,
-        default: 0
+        default: 0,
+        min: [0, 'Dish rating cannot be lower than 0'],
+        max: [5, 'Dish rating cannot be greater than 5']
     },
     ratesCount: {
         type: Number,
-        default: 0
+        default: 0,
+        min: [0, 'Number of dish reviews cannot be lower than 0']
     },
     description: {
         type: [String],
-        required: true
+        required: [true, 'Please provide a dish description']
     },
     images: {
         coverIdx: {
             type: Number,
-            default: 0
+            default: 0,
+            min: [0, 'Cover index cannot be lower than 0']
         },
         gallery: [{
             breakpoints: {
                 type: [Number],
-                required: true
+                required: [true, 'Please provide dish images breakpoints']
             },
             paths: {
                 type: [String],
-                required: true
+                required: [true, 'Please provide dish images paths']
             }
         }]
     },
     reviews: [{
         username: {
             type: String,
-            required: true
+            required: [true, 'Please provide a review author username']
         },
         title: {
             type: String,
-            required: true
+            required: [true, 'Please provide a review title']
         },
         body: {
             type: [String],
-            required: true
+            required: [true, 'Please provide a review content']
         },
         date: {
             type: String,
@@ -85,7 +90,7 @@ const dishSchema = new mongoose.Schema({
         },
         rating: {
             type: Number,
-            required: true
+            required: [true, 'Please provide a review rating']
         }
     }]
 })
