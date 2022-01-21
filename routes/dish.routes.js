@@ -1,16 +1,29 @@
 const express = require('express')
-const { getAllDishes, addDish, getDish, updateDish, deleteDish } = require('../controllers/dish.controller')
 const router = express.Router()
+
+const dishController = require('../controllers/dish.controller')
+const authController = require('../controllers/authentication.controller')
 
 router
   .route('/')
-  .get(getAllDishes)
-  .post(addDish)
+  .get(dishController.getAllDishes)
+  .post(
+    authController.protect, 
+    authController.restrictTo('manager', 'admin'),
+    dishController.addDish
+  )
 
 router
   .route('/:id/')
-  .get(getDish)
-  .patch(updateDish)
-  .delete(deleteDish)
+  .get(dishController.getDish)
+  .patch(
+    authController.protect, 
+    authController.restrictTo('client', 'manager', 'admin'),
+    dishController.updateDish
+  ).delete(
+    authController.protect, 
+    authController.restrictTo('manager', 'admin'),
+    dishController.deleteDish
+  )
 
 module.exports = router

@@ -4,8 +4,8 @@
   "description": "Mateusz Łopaciński",
   "main": "server.js",
   "scripts": {
-    "watch": "nodemon server.js",
     "start": "SET NODE_ENV=production&&nodemon server.js",
+    "dev": "nodemon server.js",
     "debug": "ndb server.js"
   },
   "author": "",
@@ -20,6 +20,7 @@
     "mongodb": "^4.3.0",
     "mongoose": "^6.1.5",
     "morgan": "^1.10.0",
+    "nodemailer": "^6.7.2",
     "validator": "^13.7.0"
   },
   "devDependencies": {

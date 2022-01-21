@@ -1,9 +1,10 @@
 const express = require('express')
-const { getCurrencies } = require('../controllers/currencies.controller')
 const router = express.Router()
+
+const currenciesController = require('../controllers/currencies.controller')
 
 router
   .route('/')
-  .get(getCurrencies)
+  .get(currenciesController.getCurrencies)
 
 module.exports = router
