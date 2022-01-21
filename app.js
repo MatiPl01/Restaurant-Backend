@@ -6,6 +6,7 @@ const bp = require('body-parser')
 
 const dishRouter = require('./routes/dish.routes')
 const currenciesRouter = require('./routes/currencies.routes')
+const usersRouter = require('./routes/user.routes')
 
 const AppError = require('./utils/app-error')
 const errorController = require('./controllers/error.controller')
@@ -23,6 +24,7 @@ if (process.env.NODE_ENV === 'development') app.use(morgan('dev'))
 // Routes
 app.use('/v1/dishes', dishRouter)
 app.use('/v1/currencies', currenciesRouter)
+app.use('/v1/users', usersRouter)
 
 // Error handling route
 app.all('*', (req, res, next) => {

@@ -3,6 +3,7 @@ dotenv.config({ path: './config.env' })
 
 process.on('uncaughtException', err => {
   console.error('Uncaught rejection:', err.name, err.message)
+  console.error(err.stack)
   process.exit(1)
 })
 
