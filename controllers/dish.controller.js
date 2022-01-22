@@ -35,7 +35,8 @@ exports.getDish = catchAsync(async (req, res, next) => {
 })
 
 exports.updateDish = catchAsync(async (req, res, next) => {
-    const dish = await Dish.findByIdAndUpdate(req.params.id, req.body, {
+    const id = req.params.id
+    const dish = await Dish.findByIdAndUpdate(id, req.body, {
         new: true,
         runValidators: true
     })
@@ -49,7 +50,8 @@ exports.updateDish = catchAsync(async (req, res, next) => {
 })
 
 exports.deleteDish = catchAsync(async (req, res, next) => {
-    const dish = await Dish.findByIdAndDelete(req.params.id)
+    const id = req.params.id
+    const dish = await Dish.findByIdAndDelete(id)
 
     if (!dish) return next(new AppError(`Cannot find a dish with ID ${id}`))
 

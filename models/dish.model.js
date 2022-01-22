@@ -71,28 +71,12 @@ const dishSchema = new mongoose.Schema({
             }
         }]
     },
-    reviews: [{
-        username: {
-            type: String,
-            required: [true, 'Please provide a review author username']
-        },
-        title: {
-            type: String,
-            required: [true, 'Please provide a review title']
-        },
-        body: {
-            type: [String],
-            required: [true, 'Please provide a review content']
-        },
-        date: {
-            type: String,
-            default: ''
-        },
-        rating: {
-            type: Number,
-            required: [true, 'Please provide a review rating']
+    reviews: [
+        {
+            type: mongoose.Schema.ObjectId,
+            ref: 'Review'
         }
-    }]
+    ]
 })
 
 const Dish = mongoose.model('Dish', dishSchema)

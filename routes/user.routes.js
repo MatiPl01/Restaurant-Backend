@@ -14,12 +14,6 @@ router.post(
   authController.login
 )
 
-router.delete(
-  '/delete',
-  authController.protect,
-  userController.deleteCurrentUser
-)
-
 router.post(
   '/forgotPassword', 
   authController.forgotPassword
@@ -37,22 +31,38 @@ router.post(
 )
 
 router
+  .route('/basket')
+  .get(
+    authController.protect, 
+    userController.getBasket
+  ).patch(
+    authController.protect, 
+    userController.updateBasket
+  )
+
+router
   .route('/')
   .get(
     authController.protect, 
     authController.restrictTo('admin'),
     userController.getAllUsers
-  ).post(userController.addUser)
+  ).post(
+    userController.addUser
+  ).delete(
+    authController.protect,
+    authController.restrictTo('client'),
+    userController.deleteCurrentUser
+  )
 
 router
   .route('/:id/')
   .get(
     authController.protect,
-    authController.restrictTo('client', 'admin'),
+    authController.restrictTo('admin'),
     userController.getUser
   ).patch(
     authController.protect,
-    authController.restrictTo('client', 'admin'),
+    authController.restrictTo('admin'),
     userController.updateUser
   ).delete(
     authController.protect,

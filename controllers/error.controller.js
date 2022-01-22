@@ -41,7 +41,7 @@ const sendErrorProd = (err, res) => {
     // Programming or unknown error, don't leak details to the user
     } else {
         // Show error in a console
-        console.error('Error:', err)
+        console.error('❌ Error:', err)
 
         // Send a generic message to the user
         res.status(500).json({
@@ -52,19 +52,23 @@ const sendErrorProd = (err, res) => {
 }
 
 module.exports = (err, req, res, next) => {
+    console.log('>> NEW ERROR', err.message)
+    
     if (!err.statusCode) err.statusCode = 500
     if (!err.status) err.status = 'error'
 
     if (process.env.NODE_ENV === 'development') sendErrorDev(err, res)
     else if (process.env.NODE_ENV === 'production') {
-        let newErr = { ...err }
+        let resErr = err
 
-        if (newErr.name === 'CastError') newErr = handleCastErrorDB(newErr)
-        else if (newErr.code === 11000) newErr = handleDuplicateFieldsDB(newErr)
-        else if (newErr.name === 'ValidationError') newErr = handleValidationErrorDB(newErr)
-        else if (newErr.name === 'JsonWebTokenError') newErr = handleJWTError()
-        else if (newErr.name === 'TokenExpiredError') newErr = handleJWTExpiredError()
+        console.log('resErr MESS', resErr.message)
 
-        sendErrorProd(newErr, res)
+        if (err.name === 'CastError') resErr = handleCastErrorDB(resErr)
+        else if (err.code === 11000) resErr = handleDuplicateFieldsDB(resErr)
+        else if (err.name === 'ValidationError') resErr = handleValidationErrorDB(resErr)
+        else if (err.name === 'JsonWebTokenError') resErr = handleJWTError()
+        else if (err.name === 'TokenExpiredError') resErr = handleJWTExpiredError()
+
+        sendErrorProd(resErr, res)
     }
 }

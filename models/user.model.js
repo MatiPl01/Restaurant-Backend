@@ -6,7 +6,9 @@ const bcrypt = require('bcryptjs')
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, 'Please provide your name']
+        required: [true, 'Please provide your name'],
+        minlength: 3,
+        maxlength: 20
     },
     email: {
         type: String,
@@ -15,7 +17,6 @@ const userSchema = new mongoose.Schema({
         lowercase: true,
         validate: [validator.isEmail, 'Please provide a valid email']
     },
-    photo: String,
     role: {
         type: String,
         enum: ['client', 'manager', 'admin'],
@@ -45,17 +46,46 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: true,
         select: false
-    }
-    // TODO - add banned state (similar to the active)
+    },
+    banned: {
+        type: Boolean,
+        default: false
+    },
+    basket: [
+        {
+            dish: {
+                type: mongoose.Schema.ObjectId,
+                ref: 'Dish',
+            },
+            quantity: {
+                type: Number,
+                required: [true, 'Please provide a dish quantity'],
+                min: 1
+            }
+        }
+    ],
+    orders: [
+        {
+            type: mongoose.Schema.ObjectId,
+            ref: 'Order'
+        }
+    ]
 })
 
 userSchema.pre('save', async function(next) {
     // Call the next middleware if a password hasn't been changed
-    if (!this.isModified('password') || this.isNew) return next()
+    if (!this.isModified('password')) return next()
     // Otherwise, encrypt the user password with cost of 12
     this.password = await bcrypt.hash(this.password, 12)
     // Remove the repeated password
     this.repeatedPassword = undefined
+    
+    next()
+})
+
+userSchema.pre('save', function(next) {
+    if (!this.isModified('password') || this.isNew) return next()
+    
     this.passwordChangedDate = Date.now() - 1000
     next()
 })

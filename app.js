@@ -12,6 +12,8 @@ require('./db/db-connect')
 const dishRouter = require('./routes/dish.routes')
 const currenciesRouter = require('./routes/currencies.routes')
 const usersRouter = require('./routes/user.routes')
+const ordersRouter = require('./routes/order.routes')
+const reviewsRouter = require('./routes/review.routes')
 
 const AppError = require('./utils/app-error')
 const errorController = require('./controllers/error.controller')
@@ -50,6 +52,8 @@ app.use((req, res, next) => {
 app.use('/v1/dishes', dishRouter)
 app.use('/v1/currencies', currenciesRouter)
 app.use('/v1/users', usersRouter)
+app.use('/v1/orders', ordersRouter)
+app.use('/v1/reviews', reviewsRouter)
 
 // Error handling middleware
 app.use(errorController)
