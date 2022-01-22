@@ -40,7 +40,13 @@ const userSchema = new mongoose.Schema({
     },
     passwordChangedDate: Date,
     passwordResetToken: String,
-    passwordResetExpirationTime: Date
+    passwordResetExpirationTime: Date,
+    active: {
+        type: Boolean,
+        default: true,
+        select: false
+    }
+    // TODO - add banned state (similar to the active)
 })
 
 userSchema.pre('save', async function(next) {
@@ -51,6 +57,11 @@ userSchema.pre('save', async function(next) {
     // Remove the repeated password
     this.repeatedPassword = undefined
     this.passwordChangedDate = Date.now() - 1000
+    next()
+})
+
+userSchema.pre(/^find/, function(next) {
+    this.find({ active: { $ne: false } })
     next()
 })
 

@@ -6,7 +6,6 @@ const User = require('../models/user.model')
 const AppError = require('../utils/app-error')
 const catchAsync = require('../utils/catch-async')
 const sendEmail = require('../utils/email')
-const { unsubscribe } = require('../routes/dish.routes')
 
 const signToken = id => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -16,17 +15,30 @@ const signToken = id => {
 
 const signAndSendNewToken = (user, statusCode, res) => {
     const token = signToken(user._id)
+    const cookieOptions = {
+        expires: new Date(
+            Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 86400000 // Convert days to milliseconds
+        ),
+        httpOnly: true
+    }
+    if (process.env.NODE_ENV === 'production') {
+        cookieOptions.secure = true
+    }
+    res.cookie('jwt', token, cookieOptions)
+
+    // Remove password from output
+    user.password = user.repeatedPassword = undefined
 
     res.status(statusCode).json({
         status: 'success',
         token,
-        data: { user }
+        data: user
     })
 }
 
 exports.signUp = catchAsync(async (req, res, next) => {
     // Ignore inputted roles as we don't want users to choose their roles
-    const { role, rest } = req.body
+    const { role, ...rest } = req.body
     const newUser = await User.create(rest)
     signAndSendNewToken(newUser, 201, res)
 })

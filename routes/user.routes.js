@@ -8,9 +8,16 @@ router.post(
   '/signup', 
   authController.signUp
 )
+
 router.post(
   '/login', 
   authController.login
+)
+
+router.delete(
+  '/delete',
+  authController.protect,
+  userController.deleteCurrentUser
 )
 
 router.post(
